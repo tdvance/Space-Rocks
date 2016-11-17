@@ -65,9 +65,11 @@ public class LevelManager : MonoBehaviour {
 
     void UpdateState() {
         if (realCurrentState == GameState.GAME && currentState == GameState.OPTIONS_FROM_GAME) {
-            //concurrent load
+            Debug.Log("Adding scene: " + stateScenes[(int)currentState]);
+            SceneManager.LoadScene(stateScenes[(int)currentState], LoadSceneMode.Additive);
         } else if (realCurrentState == GameState.OPTIONS_FROM_GAME && currentState == GameState.GAME) {
-            //resume from pause
+            Debug.Log("Removing scene: " + stateScenes[(int)realCurrentState]);
+            SceneManager.UnloadScene(stateScenes[(int)realCurrentState]);
         } else {
             Debug.Log("Loading scene: " + stateScenes[(int)currentState]);
             SceneManager.LoadScene(stateScenes[(int)currentState]);
