@@ -25,6 +25,7 @@ public class Rock : MonoBehaviour {
         if (rockSprite) {
             GetComponent<SpriteRenderer>().sprite = rockSprite;
         }
+        //Debug.Log("Rock " + name + " with tag " + gameObject.tag + " changed to " + sizeTag);
         gameObject.tag = sizeTag;
 
         //Kludge: reset the polygon collider
