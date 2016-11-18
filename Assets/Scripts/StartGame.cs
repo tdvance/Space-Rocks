@@ -3,6 +3,10 @@ using System.Collections;
 
 public class StartGame : MonoBehaviour {
 
+    public int initialNumLives = 3;
+
+    private int numLivesRemaining;
+
     // Use this for initialization
     void Start() {
         if (FlexibleMusicManager.instance) {
@@ -21,11 +25,16 @@ public class StartGame : MonoBehaviour {
     }
 
     public void StartLevel() {
+        numLivesRemaining = initialNumLives;
         RestartLevel(0);
     }
 
     public void RestartLevel(float delay = 0) {
         //TODO fixed number of lives
+        numLivesRemaining--;
+        if (numLivesRemaining < 0) {
+            GameOver();
+        }
         Invoke("StartShip", delay);
     }
 
@@ -37,5 +46,8 @@ public class StartGame : MonoBehaviour {
         ship.Reset();
     }
 
-
+    public void GameOver() {
+        FlexibleMusicManager.instance.Pause();
+        LevelManager.instance.ChangeState(LevelManager.GameState.MENU, 0.5f);
+    }
 }

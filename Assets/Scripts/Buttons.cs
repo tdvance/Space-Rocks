@@ -20,10 +20,8 @@ public class Buttons : MonoBehaviour {
     }
 
     public void SubmitExitGame() {
-        //TODO call end of game method of game class
         Time.timeScale = 1f;
-        FlexibleMusicManager.instance.Pause();
-        LevelManager.instance.ChangeState(LevelManager.GameState.MENU, 0.5f);
+        FindObjectOfType<StartGame>().GameOver();
     }
 
     public void SubmitOptionsFromGame() {
