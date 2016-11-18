@@ -13,13 +13,20 @@ public class Ship : MonoBehaviour {
     public float bigDamage = 2;
     public float smallDamage = 1;
 
+    public GameObject shipPrefab;
+
     private float accelerate;
     private float turn;
     private Rigidbody2D rb;
     private float health = 4;
 
+    private static GameObject shipPrefabStatic;
+
     // Use this for initialization
     void Start() {
+        if (shipPrefab && !shipPrefabStatic) {
+            shipPrefabStatic = shipPrefab;
+        }
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -73,7 +80,7 @@ public class Ship : MonoBehaviour {
     }
 
     public static Ship SpawnNewShip() {
-        Debug.Log("Spawn New Ship");
-        return null;//TODO
+        GameObject obj = GameObject.Instantiate(Ship.shipPrefabStatic);
+        return obj.GetComponent<Ship>();
     }
 }
