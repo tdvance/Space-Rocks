@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class StartGame : MonoBehaviour {
+public class Game : MonoBehaviour {
 
     public int initialNumLives = 3;
 

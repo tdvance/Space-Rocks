@@ -70,7 +70,7 @@ public class Ship : MonoBehaviour {
 
 
     void Die() {
-        StartGame game = FindObjectOfType<StartGame>();
+        Game game = FindObjectOfType<Game>();
         game.RestartLevel(1.5f);
         Destroy(gameObject);
     }

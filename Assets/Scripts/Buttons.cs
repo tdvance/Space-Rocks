@@ -21,7 +21,7 @@ public class Buttons : MonoBehaviour {
 
     public void SubmitExitGame() {
         Time.timeScale = 1f;
-        FindObjectOfType<StartGame>().GameOver();
+        FindObjectOfType<Game>().GameOver();
     }
 
     public void SubmitOptionsFromGame() {
