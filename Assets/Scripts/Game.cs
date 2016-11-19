@@ -5,7 +5,13 @@ public class Game : MonoBehaviour {
 
     public int initialNumLives = 3;
 
+    public GameObject rocks;
+    public GameObject rockTemplate;
+    public Sprite[] largeRockSprites;
+
     private int numLivesRemaining;
+    private int levelNumber;
+    private bool levelingUp = false;
 
     // Use this for initialization
     void Start() {
@@ -16,21 +22,59 @@ public class Game : MonoBehaviour {
         } else {
             Debug.LogWarning("No music manager found.");
         }
+        StartGame();
+    }
+
+    public void StartGame() {
+        numLivesRemaining = initialNumLives;
+        levelNumber = 1;
         StartLevel();
     }
 
     // Update is called once per frame
     void Update() {
+        //count rocks remaining
+        if (!levelingUp) {
+            int count = 0;
+            foreach (Transform t in rocks.transform) {
+                count++;
+                break;
+            }
+            if (count == 0) {
+                levelingUp = true;
+                FindObjectOfType<Game>().LevelUp(1.5f);
+            }
+        }
+    }
 
+    public void LevelUp(float delay) {
+        levelNumber++;
+        Invoke("StartLevel", delay);
     }
 
     public void StartLevel() {
-        numLivesRemaining = initialNumLives;
+        int count = 0;
+        int desiredCount = 3;
+        if (levelNumber > 2) {
+            desiredCount = 4;
+            if (levelNumber > 5) {
+                desiredCount = 5;
+                if (levelNumber > 10) {
+                    desiredCount = 6;
+                }
+            }
+        }
+        foreach (Transform rock in rocks.transform) {
+            count++;
+        }
+        if (count < desiredCount) {
+            SpawnRocks(desiredCount);
+        }
+        levelingUp = false;
         RestartLevel(0);
     }
 
     public void RestartLevel(float delay = 0) {
-        //TODO fixed number of lives
         numLivesRemaining--;
         if (numLivesRemaining < 0) {
             GameOver();
@@ -49,5 +93,39 @@ public class Game : MonoBehaviour {
     public void GameOver() {
         FlexibleMusicManager.instance.Pause();
         LevelManager.instance.ChangeState(LevelManager.GameState.MENU, 0.5f);
+    }
+
+    public void SpawnRocks(int howmany) {
+        //spread them out on a grid
+        int gridX = (int)Mathf.Sqrt(howmany);
+        int gridY = (int)Mathf.Sqrt(howmany);
+        if (gridX * gridY < howmany) {
+            gridX++;
+        }
+        if (gridX * gridY < howmany) {
+            gridY++;
+        }
+        int count = 0;
+        for (float x = -7; x <= 7; x += 14f / gridX) {
+            for (float y = -4; y <= 4; y += 8f / gridY) {
+                count++;
+                if (count > howmany) {
+                    break;
+                }
+                SpawnRock(x, y);
+            }
+        }
+    }
+
+    public void SpawnRock(float x, float y) {
+        GameObject rock = Instantiate(rockTemplate);
+        rock.transform.SetParent(rocks.transform);
+        rock.transform.position = new Vector3(x, y, rock.transform.position.z);
+        Rock r = rock.GetComponent<Rock>();
+        r.velocity = new Vector2(x / 4f, y / 4f);
+        r.angularVelocity = Random.Range(-180f, 180f);
+        r.sizeTag = "Large";
+        int index = Random.Range(0, largeRockSprites.Length);
+        r.rockSprite = largeRockSprites[index];
     }
 }

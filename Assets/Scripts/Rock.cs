@@ -58,7 +58,7 @@ public class Rock : MonoBehaviour {
         } else if (sizeTag == "Small") {
             SpawnRock(Random.Range(-5f, 5f), Random.Range(-5f, 5f));
         } else {
-            //TODO spawn smoke
+            //TODO spawn smoke          
         }
         Destroy(gameObject);
     }
