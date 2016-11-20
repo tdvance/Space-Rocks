@@ -6,6 +6,9 @@ public class Settings : MonoBehaviour {
     public GameObject musicVolumeSlider;
 
     void Start() {
+        if (FlexibleMusicManager.instance.CurrentTrackNumber() > 0) {
+            FlexibleMusicManager.instance.repeat = true;
+        }
         musicVolumeSlider.GetComponent<Slider>().value = FlexibleMusicManager.instance.volume;
     }
 

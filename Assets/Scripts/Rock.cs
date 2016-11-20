@@ -12,10 +12,14 @@ public class Rock : MonoBehaviour {
     public Sprite[] mediumRockSprites;
     public Sprite[] smallRockSprites;
     public Sprite[] tinyRockSprites;
+    public AudioClip explode;
+    public AudioClip collide;
 
     Rigidbody2D rb;
+    AudioSource audioSource;
     // Use this for initialization
     void Start() {
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = velocity;
         if (rb.velocity.magnitude > maxVelocity) {
@@ -41,8 +45,15 @@ public class Rock : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Missile") {
+            AudioSource.PlayClipAtPoint(explode, Camera.main.transform.position);            
             Destroy(collision.gameObject);
             BreakApart();
+        } else {
+            if (audioSource) {
+                audioSource.clip = collide;
+                audioSource.volume = .05f;
+                audioSource.Play();
+            }
         }
     }
 

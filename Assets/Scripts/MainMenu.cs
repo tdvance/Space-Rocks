@@ -13,6 +13,9 @@ public class MainMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+        if (FlexibleMusicManager.instance.CurrentTrackNumber() > 0) {
+            FlexibleMusicManager.instance.repeat = true;
+        }
+
+    }
 }

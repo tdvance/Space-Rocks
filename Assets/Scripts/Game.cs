@@ -9,6 +9,8 @@ public class Game : MonoBehaviour {
     public GameObject rockTemplate;
     public Sprite[] largeRockSprites;
 
+    public AudioClip levelUp;
+
     private int numLivesRemaining;
     private int levelNumber;
     private bool levelingUp = false;
@@ -48,8 +50,13 @@ public class Game : MonoBehaviour {
     }
 
     public void LevelUp(float delay) {
+        Invoke("PlayLevelUp", delay / 2f);
         levelNumber++;
         Invoke("StartLevel", delay);
+    }
+
+    public void PlayLevelUp() {
+        AudioSource.PlayClipAtPoint(levelUp, Camera.main.transform.position, 1f);
     }
 
     public void StartLevel() {

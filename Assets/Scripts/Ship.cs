@@ -15,6 +15,11 @@ public class Ship : MonoBehaviour {
 
     public GameObject shipPrefab;
 
+    public AudioClip explodeBig;
+    public AudioClip explodeSmall;
+    public AudioClip explodeDie;
+
+
     private float accelerate;
     private float turn;
     private Rigidbody2D rb;
@@ -53,9 +58,11 @@ public class Ship : MonoBehaviour {
         if (collision.gameObject.tag == "Missile"
             || collision.gameObject.tag == "Large"
             || collision.gameObject.tag == "Medium") {
+            AudioSource.PlayClipAtPoint(explodeBig, Camera.main.transform.position, .2f);
             Damage(bigDamage);
         } else if (collision.gameObject.tag == "Small"
              || collision.gameObject.tag == "Tiny") {
+            AudioSource.PlayClipAtPoint(explodeSmall, Camera.main.transform.position, .1f);
             Damage(smallDamage);
         }
     }
@@ -70,6 +77,7 @@ public class Ship : MonoBehaviour {
 
 
     void Die() {
+        AudioSource.PlayClipAtPoint(explodeDie, Camera.main.transform.position, 1f);
         Game game = FindObjectOfType<Game>();
         game.RestartLevel(1.5f);
         Destroy(gameObject);
