@@ -13,7 +13,7 @@ public class Game : MonoBehaviour {
 
     public ScoreDisplay scoreDisplay;
     public LivesRemainingDisplay livesDisplay;
-
+    public static float sfxVolume = 0.25f;
 
     private int numLivesRemaining;
     private int levelNumber;
@@ -42,11 +42,7 @@ public class Game : MonoBehaviour {
     void Update() {
         //count rocks remaining
         if (!levelingUp) {
-            int count = 0;
-            foreach (Transform t in rocks.transform) {
-                count++;
-                break;
-            }
+            int count = rocks.transform.childCount;
             if (count == 0) {
                 levelingUp = true;
                 FindObjectOfType<Game>().LevelUp(1.5f);
@@ -66,7 +62,7 @@ public class Game : MonoBehaviour {
     }
 
     public void PlayLevelUp() {
-        AudioSource.PlayClipAtPoint(levelUp, Camera.main.transform.position, 1f);
+        AudioSource.PlayClipAtPoint(levelUp, Camera.main.transform.position, 1f * sfxVolume);
     }
 
     public void StartLevel() {
@@ -81,9 +77,7 @@ public class Game : MonoBehaviour {
                 }
             }
         }
-        foreach (Transform rock in rocks.transform) {
-            count++;
-        }
+        count = rocks.transform.childCount;
         if (count < desiredCount) {
             SpawnRocks(desiredCount);
         }

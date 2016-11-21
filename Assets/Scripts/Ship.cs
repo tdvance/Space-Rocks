@@ -60,11 +60,11 @@ public class Ship : MonoBehaviour {
         if (collision.gameObject.tag == "Missile"
             || collision.gameObject.tag == "Large"
             || collision.gameObject.tag == "Medium") {
-            AudioSource.PlayClipAtPoint(explodeBig, Camera.main.transform.position, .2f);
+            AudioSource.PlayClipAtPoint(explodeBig, Camera.main.transform.position, .2f*Game.sfxVolume);
             Damage(bigDamage);
         } else if (collision.gameObject.tag == "Small"
              || collision.gameObject.tag == "Tiny") {
-            AudioSource.PlayClipAtPoint(explodeSmall, Camera.main.transform.position, .1f);
+            AudioSource.PlayClipAtPoint(explodeSmall, Camera.main.transform.position, .1f*Game.sfxVolume);
             Damage(smallDamage);
         }
     }
@@ -82,7 +82,7 @@ public class Ship : MonoBehaviour {
         GameObject s = Instantiate(smokePrefab, transform.position, transform.localRotation) as GameObject;
         s.GetComponent<ParticleSystem>().startColor = new Color(1f, .5f, 0, .1f);
         Destroy(s, 5f);
-        AudioSource.PlayClipAtPoint(explodeDie, Camera.main.transform.position, 1f);
+        AudioSource.PlayClipAtPoint(explodeDie, Camera.main.transform.position, 1f * Game.sfxVolume);
         Game game = FindObjectOfType<Game>();
         game.RestartLevel(1.5f);
         Destroy(gameObject);

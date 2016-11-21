@@ -50,13 +50,13 @@ public class Rock : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Missile") {
-            AudioSource.PlayClipAtPoint(explode, Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(explode, Camera.main.transform.position, 1f*Game.sfxVolume);
             Destroy(collision.gameObject);
             BreakApart();
         } else {
             if (audioSource) {
                 audioSource.clip = collide;
-                audioSource.volume = .05f;
+                audioSource.volume = .05f* Game.sfxVolume;
                 audioSource.Play();
             }
         }
