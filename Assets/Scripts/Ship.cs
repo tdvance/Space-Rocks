@@ -15,6 +15,8 @@ public class Ship : MonoBehaviour {
 
     public GameObject shipPrefab;
 
+    public GameObject smokePrefab;
+
     public AudioClip explodeBig;
     public AudioClip explodeSmall;
     public AudioClip explodeDie;
@@ -77,6 +79,9 @@ public class Ship : MonoBehaviour {
 
 
     void Die() {
+        GameObject s = Instantiate(smokePrefab, transform.position, transform.localRotation) as GameObject;
+        s.GetComponent<ParticleSystem>().startColor = new Color(1f, .5f, 0, .1f);
+        Destroy(s, 5f);
         AudioSource.PlayClipAtPoint(explodeDie, Camera.main.transform.position, 1f);
         Game game = FindObjectOfType<Game>();
         game.RestartLevel(1.5f);

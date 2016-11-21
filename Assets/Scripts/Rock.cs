@@ -14,6 +14,7 @@ public class Rock : MonoBehaviour {
     public Sprite[] tinyRockSprites;
     public AudioClip explode;
     public AudioClip collide;
+    public GameObject smokePrefab;
 
     Rigidbody2D rb;
     AudioSource audioSource;
@@ -49,7 +50,7 @@ public class Rock : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Missile") {
-            AudioSource.PlayClipAtPoint(explode, Camera.main.transform.position);            
+            AudioSource.PlayClipAtPoint(explode, Camera.main.transform.position);
             Destroy(collision.gameObject);
             BreakApart();
         } else {
@@ -77,7 +78,8 @@ public class Rock : MonoBehaviour {
             SpawnRock(Random.Range(-5f, 5f), Random.Range(-5f, 5f));
         } else {
             game.Score(5);
-            //TODO spawn smoke          
+            GameObject s = Instantiate(smokePrefab, transform.position, transform.localRotation) as GameObject;
+            Destroy(s, 5f);
         }
         Destroy(gameObject);
     }

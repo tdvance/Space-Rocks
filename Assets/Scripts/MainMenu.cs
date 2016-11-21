@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour {
     void Start() {
         scoreDisplay.score = PlayerPrefs.GetInt("Score");
         highScoreDisplay.score = PlayerPrefs.GetInt("High Score");
+        highScoreDisplay.prefixText = "High Score: ";
         if (FlexibleMusicManager.instance.CurrentTrackNumber() > 1) {
             FlexibleMusicManager.instance.SetNewTrack(1);
             FlexibleMusicManager.instance.Play();
