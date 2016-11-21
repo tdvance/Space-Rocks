@@ -11,9 +11,14 @@ public class Game : MonoBehaviour {
 
     public AudioClip levelUp;
 
+    public ScoreDisplay scoreDisplay;
+    public LivesRemainingDisplay livesDisplay;
+
+
     private int numLivesRemaining;
     private int levelNumber;
     private bool levelingUp = false;
+
 
     // Use this for initialization
     void Start() {
@@ -49,7 +54,12 @@ public class Game : MonoBehaviour {
         }
     }
 
+    public void Score(int amount) {
+        scoreDisplay.Advance(amount);
+    }
+
     public void LevelUp(float delay) {
+        Score(100);
         Invoke("PlayLevelUp", delay / 2f);
         levelNumber++;
         Invoke("StartLevel", delay);
@@ -95,11 +105,20 @@ public class Game : MonoBehaviour {
             ship = Ship.SpawnNewShip();
         }
         ship.Reset();
+        livesDisplay.lives = numLivesRemaining;
     }
 
     public void GameOver() {
+        SaveScore();
         FlexibleMusicManager.instance.Pause();
         LevelManager.instance.ChangeState(LevelManager.GameState.MENU, 0.5f);
+    }
+
+    public void SaveScore() {
+        PlayerPrefs.SetInt("Score", scoreDisplay.score);
+        int highScore = PlayerPrefs.GetInt("High Score");
+        if (scoreDisplay.score > highScore)
+            PlayerPrefs.SetInt("High Score", scoreDisplay.score);
     }
 
     public void SpawnRocks(int howmany) {

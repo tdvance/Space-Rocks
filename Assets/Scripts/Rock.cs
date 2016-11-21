@@ -17,10 +17,14 @@ public class Rock : MonoBehaviour {
 
     Rigidbody2D rb;
     AudioSource audioSource;
+    Game game;
+
     // Use this for initialization
     void Start() {
         audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
+        game = FindObjectOfType<Game>();
+
         rb.velocity = velocity;
         if (rb.velocity.magnitude > maxVelocity) {
             rb.velocity *= maxVelocity / rb.velocity.magnitude;
@@ -59,16 +63,20 @@ public class Rock : MonoBehaviour {
 
     void BreakApart() {
         if (sizeTag == "Large") {
+            game.Score(50);
             for (int i = 0; i < 4; i++) {
                 SpawnRock(Random.Range(-5f, 5f), Random.Range(-5f, 5f));
             }
         } else if (sizeTag == "Medium") {
+            game.Score(20);
             for (int i = 0; i < 2; i++) {
                 SpawnRock(Random.Range(-5f, 5f), Random.Range(-5f, 5f));
             }
         } else if (sizeTag == "Small") {
+            game.Score(10);
             SpawnRock(Random.Range(-5f, 5f), Random.Range(-5f, 5f));
         } else {
+            game.Score(5);
             //TODO spawn smoke          
         }
         Destroy(gameObject);
